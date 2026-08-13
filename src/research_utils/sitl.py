@@ -3,7 +3,6 @@
 
 import subprocess
 from contextlib import contextmanager
-from pathlib import Path
 
 
 # Start SITL as system process
@@ -13,11 +12,11 @@ def start_sitl(
     print("Starting SITL...")
     # Have to give default values so that it thinks it's calibrated
     args = [
-        str(ardupilot_bin_path),
+        ardupilot_bin_path,
         "--model",
         "plane",
         "--home",
-        f"{','.join([str(v) for v in home_coords])},{init_yaw}",
+        f"{','.join([(v) for v in home_coords])},{init_yaw}",
         "--wipe",
         "--defaults",
         str(aircraft_params_filepath),
@@ -32,8 +31,8 @@ def start_sitl(
 # cwd: directory from which SITL is run. A logs folder will be created in this directory.
 @contextmanager
 def sitl_experiment(
-    ardupilot_bin_path: Path,
-    cwd: Path,
+    ardupilot_bin_path: str,
+    cwd: str,
     aircraft_params_file: str,
     home_coords: tuple[float, float, float],
     init_yaw: float,
