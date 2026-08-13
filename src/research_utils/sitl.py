@@ -16,7 +16,7 @@ def start_sitl(
         "--model",
         "plane",
         "--home",
-        f"{','.join([(v) for v in home_coords])},{init_yaw}",
+        f"{','.join([str(v) for v in home_coords])},{init_yaw}",
         "--wipe",
         "--defaults",
         str(aircraft_params_filepath),
