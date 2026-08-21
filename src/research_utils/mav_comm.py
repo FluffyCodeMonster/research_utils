@@ -378,7 +378,11 @@ def set_mode_auto(conn):
 def get_target_wp(conn):
     # For receiving data
     # TODO Does this need to 'eat up' the previous values, e.g. while not none, keep reading?
-    mission_data = conn.recv_match(type=['MISSION_CURRENT'], blocking=False)    # Should this be False?
+    mission_data = None
+    # TODO Should this be False?
+    # Read until None
+    while (rcvd := conn.recv_match(type=['MISSION_CURRENT'], blocking=False)):
+        mission_data = rcvd
     if mission_data is not None:
         return int(mission_data.seq)
 
