@@ -318,14 +318,14 @@ def update_param(conn, param_str, val):
         raise Exception(f"Parameter not set successfully! Error code: {'a'}.")
 
 
-def set_message_rate(conn, msg_id, intv=3e4):
+def set_message_rate(conn, msg_id, intv_s=1):
     conn.mav.command_long_send(
         conn.target_system,
         conn.target_component,
         mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,
         0,
         msg_id,
-        intv * 1e6,  # interval
+        intv_s * 1e6,  # interval, us
         0,
         0,
         0,
@@ -372,3 +372,23 @@ def set_mode_auto(conn):
     )
 
     # TODO Still have to check for acknowledgement, as shown here: https://www.ardusub.com/developers/pymavlink.html#change-flight-mode
+
+
+# Return the target waypoint number, as an int.
+def get_target_wp(conn):
+    # For receiving data
+    # TODO Does this need to 'eat up' the previous values, e.g. while not none, keep reading?
+    mission_data = conn.recv_match(type=['MISSION_CURRENT'], blocking=False)    # Should this be False?
+    if mission_data is not None:
+        return mission_data.seq
+
+# Sets the target waypoint number to wp_id
+def set_target_wp(conn, wp_id, target_system=0, target_component=0):
+    conn.mav.command_long_send(
+        target_system,
+        target_component,
+        mavutil.mavlink.MAV_CMD_DO_SET_MISSION_CURRENT,
+        0,
+        wp_id,
+        0, 0, 0, 0, 0, 0
+    )
