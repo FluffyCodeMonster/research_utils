@@ -380,7 +380,7 @@ def get_target_wp(conn):
     # TODO Does this need to 'eat up' the previous values, e.g. while not none, keep reading?
     mission_data = conn.recv_match(type=['MISSION_CURRENT'], blocking=False)    # Should this be False?
     if mission_data is not None:
-        return mission_data.seq
+        return int(mission_data.seq)
 
 # Sets the target waypoint number to wp_id
 def set_target_wp(conn, wp_id, target_system=0, target_component=0):
