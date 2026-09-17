@@ -25,7 +25,7 @@ class LogFileLoader:
         self.interps = {}   # Computed interpolators
 
         # Parse flight logs
-        self.logs = self.get_flight_logs()
+        self.logs = self._get_flight_logs()
 
         # Get start times and end times
         stat_times = np.array(self.logs.dfs['STAT']['TimeUS']) / 1e6 # ['timestamp'])
@@ -33,8 +33,6 @@ class LogFileLoader:
         self.end_time_s = stat_times[-1]
         self.total_time_s = self.end_time_s - self.start_time_s
 
-        # self.name = path.name
-    
     @property
     def start_s(self):
         return self.start_time_s
@@ -101,3 +99,5 @@ class LogFileLoader:
 # interp_vals = np.array(self.logs.dfs[log_type][key])[unique_idx]
 # # interp = make_interp_spline(unique_times - self.start_time_s, f(interp_vals), k=k)
 # interp = make_interp_spline(unique_times - self.start_time_s, f(interp_vals), k=k)
+
+# self.name = path.name
