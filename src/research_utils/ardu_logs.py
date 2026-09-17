@@ -58,9 +58,9 @@ class LogFileLoader:
         aug_fn = self.channel_aug_fns.get((log_type, chan_name), lambda x: x)
 
         log_df = self.logs.dfs[log_type]
-
+        
         # Apply filter
-        filter_arr = np.ones(len(log_df))
+        filter_arr = [True]*len(log_df)
         if filters:
             for filter_chan_name, filter_val in filters.items():
                 filter_arr = np.bitwise_and(np.array(log_df[filter_chan_name] == filter_val))
